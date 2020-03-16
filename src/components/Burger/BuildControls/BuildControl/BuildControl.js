@@ -10,4 +10,4 @@ const BuildControl = (props) => (
     </div>
 )
 
-export default buildControl
+export default BuildControl
