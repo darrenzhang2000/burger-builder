@@ -1,6 +1,6 @@
 import React from "react"
 import BuildControl from "./BuildControl/BuildControl"
-import classes from './BuildControls.css'
+import classes from "./BuildControls.css"
 /*
 Burgerbuild should pass down ingredients to Buildcontrols
 ingredients = {
@@ -25,7 +25,11 @@ const controls = [
 const BuildControls = props => (
     <div className={classes.buildControls}>
         {controls.map(control => (
-            <BuildControl key={control.label} label={control.label} />
+            <BuildControl
+                key={control.label}
+                label={control.label}
+                add={() => props.add(control.type)}
+            />
         ))}
     </div>
 )
