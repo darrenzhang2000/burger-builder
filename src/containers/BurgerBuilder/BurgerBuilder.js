@@ -18,7 +18,21 @@ class BurgerBuilder extends React.Component {
             cheese: 0,
             bacon: 0
         },
-        price: 0
+        price: 4,
+        purchasable: false
+    }
+
+    updatePurchaseState = (ingredients) => {
+        let sum = Object.keys(ingredients)
+            .map(ingr => {
+                return this.state.ingredients[ingr]
+            })
+            .reduce((sum, el) => {
+                return sum + el
+            }, 0)
+        console.log("Pitaya", sum)
+        this.setState({ purchasable: sum > 0 })
+        console.log("persimmon", this.state.purchasable)
     }
 
     addIngredientHandler = type => {
@@ -27,27 +41,29 @@ class BurgerBuilder extends React.Component {
 
         let newPrice = this.state.price + INGREDIENT_PRICES[type]
         this.setState({ price: newPrice, ingredients: updatedIngredients })
-        console.log('Longan', this.state.price)
+        this.updatePurchaseState(updatedIngredients)
+        console.log("Longan", this.state.price)
     }
 
-    removeIngredientHandler = type =>{
-        if(this.state.ingredients[type] > 0){
-            let updatedIngredients = {...this.state.ingredients}
+    removeIngredientHandler = type => {
+        if (this.state.ingredients[type] > 0) {
+            let updatedIngredients = { ...this.state.ingredients }
             updatedIngredients[type] = this.state.ingredients[type] - 1
-            console.log(updatedIngredients[type], 'mulberries')
-            
+            console.log(updatedIngredients[type], "mulberries")
+
             let newPrice = this.state.price - INGREDIENT_PRICES[type]
-            this.setState({ price: newPrice, ingredients: updatedIngredients})
-            console.log('Mangosteen')
+            this.setState({ price: newPrice, ingredients: updatedIngredients })
+            this.updatePurchaseState(updatedIngredients)
+            console.log("Mangosteen")
         }
     }
 
     render() {
-        let disabledInfo = {...this.state.ingredients}
-        for(let key in disabledInfo){
-            disabledInfo[key] = this.state.ingredients[key] <= 0 
+        let disabledInfo = { ...this.state.ingredients }
+        for (let key in disabledInfo) {
+            disabledInfo[key] = this.state.ingredients[key] <= 0
         }
-        console.log('nectarine', disabledInfo)
+        console.log("nectarine", disabledInfo)
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} />
@@ -56,7 +72,8 @@ class BurgerBuilder extends React.Component {
                     ingredients={this.state.ingredients}
                     add={this.addIngredientHandler}
                     remove={this.removeIngredientHandler}
-                    disabled = {disabledInfo}
+                    disabled={disabledInfo}
+                    purchasable={this.state.purchasable}
                 />
             </Aux>
         )
